@@ -13,7 +13,8 @@ class NoticiaController extends Controller
      */
     public function index()
     {
-        //
+        $noticias = Noticia::orderByDesc('created_at')->get();
+        return view('noticia',['noticias' => $noticias]);
     }
 
     /**
