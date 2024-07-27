@@ -26,10 +26,10 @@ class NoticiaController extends Controller
         // echo $site;
 
         $noticias = [];
-        
 
-        
 
+
+        /*
         if (Cache::has('dez_primeiras_noticias')) // has => verifica se existe no Redis (se já existe em cache)
         {
             $noticias = Cache::get('dez_primeiras_noticias');
@@ -37,8 +37,11 @@ class NoticiaController extends Controller
             $noticias = Noticia::orderByDesc('created_at')->limit(10)->get();
             Cache::put('dez_primeiras_noticias', $noticias, 15);
         }
-
-
+*/
+        // Forma mais enxuta de implementar que a anterior
+        $noticias = Cache::remember('dez_primeiras_noticias', 15, function () {
+            return $noticias = Noticia::orderByDesc('created_at')->limit(10)->get();
+        });
 
         return view('noticia', ['noticias' => $noticias]);
     }
